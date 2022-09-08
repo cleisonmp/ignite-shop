@@ -1,19 +1,16 @@
-import Link from 'next/link'
-import styles from './Header.module.css'
+import Image from 'next/future/image'
+import { Container } from './headerStitches'
+import { Handbag } from 'phosphor-react'
+import logoImg from '../../../assets/logo.svg'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface HeaderProps {}
 
 export const Header = () => {
   return (
-    <header className={styles.header}>
-      <Link href='/'>
-        <a>Home</a>
-      </Link>
-      <Link href='/about'>
-        <a>About</a>
-      </Link>
-      <input className={styles.input} placeholder='Search...' />
-    </header>
+    <Container>
+      <Image src={logoImg} alt='' />
+      <Handbag size={32} />
+    </Container>
   )
 }

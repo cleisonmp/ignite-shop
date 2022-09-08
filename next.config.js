@@ -5,6 +5,11 @@ const nextConfig = {
   images: {
     domains: ['i.pravatar.cc', 'picsum.photos'],
   },
+  experimental: {
+    images: {
+      allowFutureImage: true,
+    },
+  },
 }
 
 module.exports = nextConfig
