@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react'
 //import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import Head from 'next/head'
 import Image from 'next/future/image'
 import axios from 'axios'
 
@@ -48,22 +49,30 @@ const Product: NextPageWithLayout<ProductProps> = ({ product }) => {
     }
   }
   return (
-    <ProductContainer>
-      <ImageContainer>
-        <Image src={product.imageUrl} width={520} height={480} alt='' />
-      </ImageContainer>
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
+      <ProductContainer>
+        <ImageContainer>
+          <Image src={product.imageUrl} width={520} height={480} alt='' />
+        </ImageContainer>
 
-      <ProductDetails>
-        <h1>{product.name}</h1>
-        <span>{product.price}</span>
+        <ProductDetails>
+          <h1>{product.name}</h1>
+          <span>{product.price}</span>
 
-        <p>{product.description}</p>
+          <p>{product.description}</p>
 
-        <button disabled={isCreatingCheckoutSession} onClick={handleBuyButton}>
-          Add to Cart
-        </button>
-      </ProductDetails>
-    </ProductContainer>
+          <button
+            disabled={isCreatingCheckoutSession}
+            onClick={handleBuyButton}
+          >
+            Add to Cart
+          </button>
+        </ProductDetails>
+      </ProductContainer>
+    </>
   )
 }
 Product.getLayout = function getLayout(page: ReactElement) {

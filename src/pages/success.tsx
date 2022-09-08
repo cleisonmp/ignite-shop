@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { GetServerSideProps } from 'next'
 import Image from 'next/future/image'
-//import Head from 'next/head'
+import Head from 'next/head'
 import Link from 'next/link'
 import { stripe, StripeProduct } from '../lib/services/stripe'
 
@@ -23,6 +23,11 @@ const Success: NextPageWithLayout<SuccessProps> = ({
 }) => {
   return (
     <>
+      <Head>
+        <title>Purchase Confirmed | Ignite Shop</title>
+
+        <meta name='robots' content='noindex' />
+      </Head>
       <SuccessContainer>
         <h1>Purchase confirmed</h1>
 
