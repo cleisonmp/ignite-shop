@@ -1,7 +1,8 @@
-import { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 //import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/future/image'
+import axios from 'axios'
 
 import { stripe, StripePrice } from '../../lib/services/stripe'
 import { formatCurrency } from '../../lib/utils/formatCurrency'
@@ -21,12 +22,31 @@ interface ProductProps {
     imageUrl: string
     price: string
     description: string
+    priceId: string
   }
 }
 
 const Product: NextPageWithLayout<ProductProps> = ({ product }) => {
   //const { query } = useRouter()
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
+  async function handleBuyButton() {
+    try {
+      setIsCreatingCheckoutSession(true)
 
+      const response = await axios.post('/api/checkout', {
+        priceId: product.priceId,
+      })
+
+      const { checkoutUrl } = response.data
+
+      window.location.href = checkoutUrl
+    } catch (err) {
+      setIsCreatingCheckoutSession(false)
+
+      alert('Falha ao redirecionar ao checkout!')
+    }
+  }
   return (
     <ProductContainer>
       <ImageContainer>
@@ -39,7 +59,9 @@ const Product: NextPageWithLayout<ProductProps> = ({ product }) => {
 
         <p>{product.description}</p>
 
-        <button>Add to Cart</button>
+        <button disabled={isCreatingCheckoutSession} onClick={handleBuyButton}>
+          Add to Cart
+        </button>
       </ProductDetails>
     </ProductContainer>
   )
@@ -77,6 +99,7 @@ export const getStaticProps: GetStaticProps<
         imageUrl: product.images[0] ?? '',
         price: formatCurrency((price.unit_amount ?? 0) / 100),
         description: product.description ?? '',
+        priceId: price.id,
       },
     },
     revalidate: 60 * 60 * 1, // 1 hours
