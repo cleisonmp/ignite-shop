@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
+import { getCssText } from '../styles'
 
 export default function Document() {
   return (
@@ -10,6 +11,11 @@ export default function Document() {
         />
 
         <link rel='shortcut icon' href='/favicon.ico' type='image/ico' />
+
+        <style
+          id='stitches'
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
       </Head>
       <body>
         <Main />
