@@ -9,7 +9,7 @@ export interface HeaderProps {}
 export const Header = () => {
   return (
     <Container>
-      <Image src={logoImg} alt='' />
+      <Image src={logoImg} alt='ignite shop logo' />
       <Handbag size={32} />
     </Container>
   )
