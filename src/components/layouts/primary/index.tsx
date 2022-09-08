@@ -14,7 +14,7 @@ export const PrimaryLayout = ({ children }: PrimaryLayoutProps) => {
     <>
       <Container>
         <Header />
-        <main>{children}</main>
+        {children}
         <footer>Footer</footer>
       </Container>
     </>
