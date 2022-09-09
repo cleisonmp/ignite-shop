@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { Footer } from '../footer'
 import { Header } from '../header'
 
 import { Container } from './primaryStitches'
@@ -15,7 +16,7 @@ export const PrimaryLayout = ({ children }: PrimaryLayoutProps) => {
       <Container>
         <Header />
         {children}
-        <footer>Footer</footer>
+        <Footer />
       </Container>
     </>
   )
