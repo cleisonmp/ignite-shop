@@ -9,6 +9,12 @@ export const Container = styled('header', {
   marginLeft: 'auto',
   marginRight: 'auto',
 })
+export const ButtonHome = styled('button', {
+  backgroundColor: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+})
+
 export const IconsContainer = styled('div', {
   display: 'flex',
   gap: '1rem',

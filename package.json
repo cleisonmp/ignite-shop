@@ -22,6 +22,7 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@react-spring/web": "^9.5.2",
     "@stitches/react": "^1.2.8",
     "axios": "^0.27.2",
     "keen-slider": "^6.7.0",
@@ -29,7 +30,8 @@
     "phosphor-react": "^1.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "^10.8.0"
+    "stripe": "^10.8.0",
+    "zustand": "^4.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
