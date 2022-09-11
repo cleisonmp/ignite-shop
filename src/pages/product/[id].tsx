@@ -1,9 +1,8 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useCallback } from 'react'
 //import { useRouter } from 'next/router'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/future/image'
-import axios from 'axios'
 
 import { stripe, StripePrice } from '../../lib/services/stripe'
 import { formatCurrency } from '../../lib/utils/formatCurrency'
@@ -15,13 +14,17 @@ import {
   ProductContainer,
   ProductDetails,
 } from '../../styles/pages/product'
+import { useShoppingCart } from '../../lib/hooks/useShoppingCart'
+import { useShoppingCartDrawer } from '../../lib/stores/ShoppingCartDrawer'
+import shallow from 'zustand/shallow'
 
 interface ProductProps {
   product: {
     id: string
     name: string
     imageUrl: string
-    price: string
+    price: number
+    formattedPrice: string
     description: string
     priceId: string
   }
@@ -29,25 +32,21 @@ interface ProductProps {
 
 const Product: NextPageWithLayout<ProductProps> = ({ product }) => {
   //const { query } = useRouter()
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
-  async function handleBuyButton() {
-    try {
-      setIsCreatingCheckoutSession(true)
+  const { addProduct, isProductInCart } = useShoppingCart()
+  const openShoppingCart = useShoppingCartDrawer(
+    useCallback((state) => state.openShoppingCart, []),
+    shallow,
+  )
 
-      const response = await axios.post('/api/checkout', {
-        priceId: product.priceId,
-      })
+  const allowAddToCart = !isProductInCart(product.id)
 
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (err) {
-      setIsCreatingCheckoutSession(false)
-
-      alert('Falha ao redirecionar ao checkout!')
-    }
+  const handleAddToCart = () => {
+    addProduct(product)
   }
+  const handleOpenShoppingCart = () => {
+    openShoppingCart()
+  }
+
   return (
     <>
       <Head>
@@ -60,15 +59,14 @@ const Product: NextPageWithLayout<ProductProps> = ({ product }) => {
 
         <ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{product.formattedPrice}</span>
 
           <p>{product.description}</p>
 
           <button
-            disabled={isCreatingCheckoutSession}
-            onClick={handleBuyButton}
+            onClick={allowAddToCart ? handleAddToCart : handleOpenShoppingCart}
           >
-            Add to Cart
+            {allowAddToCart ? 'Add to Cart' : 'View on Cart'}
           </button>
         </ProductDetails>
       </ProductContainer>
@@ -106,7 +104,8 @@ export const getStaticProps: GetStaticProps<
         id: product.id ?? '',
         name: product.name ?? '',
         imageUrl: product.images[0] ?? '',
-        price: formatCurrency((price.unit_amount ?? 0) / 100),
+        price: price.unit_amount ?? 0,
+        formattedPrice: formatCurrency((price.unit_amount ?? 0) / 100),
         description: product.description ?? '',
         priceId: price.id,
       },
