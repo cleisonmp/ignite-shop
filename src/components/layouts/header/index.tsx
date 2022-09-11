@@ -37,12 +37,18 @@ export const Header = () => {
         <Image src={logoImg} alt='ignite shop logo' />
       </ButtonHome>
       <IconsContainer>
-        <Link href='/account'>
+        <Link
+          //href='/account'
+          href='#'
+        >
           <MenuButton>
             <User size={32} />
           </MenuButton>
         </Link>
-        <Link href='/orders'>
+        <Link
+          //href='/orders'
+          href='#'
+        >
           <MenuButton>
             <Package size={32} />
           </MenuButton>
